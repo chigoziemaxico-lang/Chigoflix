@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Chigoflix - Ultra-Secure Global Streaming Platform & Data Pipeline</title>
     <!-- Tailwind CSS Engine -->
+=======
+    <title>Chigoflix - Automated Multi-Source Premium MovieBox</title>
+>>>>>>> 9d7f165 (Update site code)
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
+<<<<<<< HEAD
                         slateDark: '#0A0C10',
                         frostedCard: '#12161F',
                         cyberCyan: '#00F0FF',
@@ -23,6 +28,17 @@
                         purpleGlow: '0 0 20px rgba(138, 43, 226, 0.5)',
                         threatAlert: '0 0 25px rgba(255, 42, 109, 0.6)',
                         ultraDecoder: '0 0 35px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(138, 43, 226, 0.3)',
+=======
+                        slateGray: '#121417',
+                        frostedStone: '#1A1D24',
+                        neonCyan: '#00F0FF',
+                        electricViolet: '#8A2BE2',
+                    },
+                    boxShadow: {
+                        cyanGlow: '0 0 20px rgba(0, 240, 255, 0.7)',
+                        violetGlow: '0 0 20px rgba(138, 43, 226, 0.7)',
+                        ultraDecoder: '0 0 35px rgba(0, 240, 255, 0.25), inset 0 0 20px rgba(138, 43, 226, 0.35)',
+>>>>>>> 9d7f165 (Update site code)
                     }
                 }
             }
@@ -31,6 +47,7 @@
     <style>
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+<<<<<<< HEAD
         @keyframes pulse-glow {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
@@ -97,10 +114,21 @@
         <!-- Main Header Navigation Bar -->
         <nav class="bg-slateDark/90 backdrop-blur-md border-b border-frostedCard px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-4 sticky top-0 z-40">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.reload()">
+=======
+        body { cursor: pointer; }
+    </style>
+</head>
+<body class="bg-slateGray text-white min-h-screen font-sans overflow-x-hidden">
+
+    <div id="applicationDashboard">
+        <nav class="bg-slateGray border-b border-frostedStone px-6 py-4 flex items-center justify-between sticky top-0 z-40">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="window.location.reload()">
+>>>>>>> 9d7f165 (Update site code)
                 <svg class="w-10 h-10 drop-shadow-[0_0_8px_#00F0FF]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M75 25C65 12 40 12 25 25C10 40 10 65 25 75C40 88 65 88 75 75" stroke="#8A2BE2" stroke-width="12" stroke-linecap="round"/>
                     <path d="M45 35L65 50L45 65V35Z" fill="#00F0FF" />
                 </svg>
+<<<<<<< HEAD
                 <span class="text-2xl font-black tracking-wider text-white">CHIGO<span class="text-cyberCyan">FLIX</span></span>
             </div>
             
@@ -191,10 +219,47 @@
                 </div>
                 
                 <div class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-frostedCard shadow-ultraDecoder">
+=======
+                <span class="text-xl font-bold tracking-wider text-white">CHIGO<span class="text-neonCyan">FLIX</span></span>
+            </div>
+            
+            <form onsubmit="event.preventDefault(); executeGlobalDatabaseSearch(document.getElementById('movieEngineSearch').value);" class="w-1/3 flex space-x-2">
+                <input
+                    id="movieEngineSearch"
+                    type="text"
+                    placeholder="Search worldwide movies..."
+                    oninput="handleAutoSearch(this.value)"
+                    class="w-full bg-frostedStone border border-gray-800 text-white placeholder-gray-500 rounded-full py-2 px-5 focus:outline-none focus:border-neonCyan focus:shadow-cyanGlow transition-all"
+                />
+                <button type="submit" class="bg-neonCyan text-black font-bold px-6 py-2 rounded-full hover:shadow-cyanGlow transition-all">
+                    Search
+                </button>
+            </form>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-4 mt-8 pb-20">
+            <div class="mb-12">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                    <div>
+                        <h2 id="nowPlayingTitle" class="text-xl font-black tracking-wider uppercase text-transparent bg-clip-text bg-gradient-to-r from-neonCyan to-electricViolet">Loading 4K Stream Core...</h2>
+                        <p class="text-[11px] text-gray-500 font-mono mt-1 uppercase tracking-wider">Multi-Source Connectivity Matrix: <span class="text-neonCyan">All Platforms Auto-Unified Live</span></p>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 bg-frostedStone border border-gray-800 px-3 py-1.5 rounded-xl text-xs font-mono">
+                        <span class="text-[10px] text-gray-500 uppercase mr-1">Resolver Server:</span>
+                        <button onclick="switchStreamServer('vidsrc_xyz')" id="btn-vidsrc_xyz" class="text-neonCyan font-bold border border-neonCyan/30 bg-neonCyan/10 px-2 py-0.5 rounded">SERVER Alpha</button>
+                        <button onclick="switchStreamServer('vidsrc_to')" id="btn-vidsrc_to" class="hover:text-neonCyan transition-colors px-2 py-0.5 rounded">SERVER Beta</button>
+                        <button onclick="switchStreamServer('embed_su')" id="btn-embed_su" class="hover:text-neonCyan transition-colors px-2 py-0.5 rounded">SERVER Gamma</button>
+                    </div>
+                </div>
+                
+                <div class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-frostedStone shadow-ultraDecoder">
+>>>>>>> 9d7f165 (Update site code)
                     <iframe id="videoDecoderFrame" class="absolute inset-0 w-full h-full z-10 border-0 bg-zinc-950" allowfullscreen allow="autoplay; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="no-referrer"></iframe>
                 </div>
             </div>
 
+<<<<<<< HEAD
             <!-- DATA PIPELINE & SECURITY ARCHITECTURE MONITORING BOARD -->
             <div class="bg-frostedCard border border-gray-800 rounded-2xl p-6 mb-12 font-mono">
                 <div class="flex items-center justify-between mb-4 border-b border-gray-800 pb-3">
@@ -292,16 +357,26 @@
     </div>
 
     <!-- MAIN JAVASCRIPT LOGIC ENGINE -->
+=======
+            <div id="movieGridRowsEngine" class="space-y-10"></div>
+        </main>
+    </div>
+
+>>>>>>> 9d7f165 (Update site code)
     <script>
         const TMDB_API_KEY = "15d2fb670001422d4d858257578007d6";
         const TMDB_BASE_URL = "https://api.themoviedb.org/3";
         const TMDB_IMG_URL = "https://image.tmdb.org/t/p/w500";
+<<<<<<< HEAD
         const TMDB_HD_IMG_URL = "https://image.tmdb.org/t/p/original";
+=======
+>>>>>>> 9d7f165 (Update site code)
 
         let currentActiveMovieId = "533535";
         let currentActiveMovieTitle = "Deadpool & Wolverine";
         let chosenScraperServerNode = "vidsrc_xyz";
         let autoSearchTimer = null;
+<<<<<<< HEAD
         let blockedThreatsCount = 0;
 
         // Persistent User Stores
@@ -387,6 +462,14 @@
         }
 
         // Debounced Real-Time Search
+=======
+
+        document.addEventListener('DOMContentLoaded', () => {
+            deployGlobalMovieChannels();
+            triggerAutomatedVideoPull(currentActiveMovieId, currentActiveMovieTitle);
+        });
+
+>>>>>>> 9d7f165 (Update site code)
         function handleAutoSearch(query) {
             clearTimeout(autoSearchTimer);
             if (!query.trim()) {
@@ -394,6 +477,7 @@
                 return;
             }
             autoSearchTimer = setTimeout(() => {
+<<<<<<< HEAD
                 executeGlobalDatabaseSearch();
             }, 350);
         }
@@ -460,6 +544,16 @@
             currentActiveMovieId = tmdbId;
             currentActiveMovieTitle = title;
             document.getElementById('nowPlayingTitle').innerText = "Now Streaming: " + title + " [4K UHD Ultra]";
+=======
+                executeGlobalDatabaseSearch(query);
+            }, 400);
+        }
+
+        function triggerAutomatedVideoPull(tmdbId, title) {
+            currentActiveMovieId = tmdbId;
+            currentActiveMovieTitle = title;
+            document.getElementById('nowPlayingTitle').innerText = "Now Streaming: " + title + " [Auto-Loaded Subtitles & CC]";
+>>>>>>> 9d7f165 (Update site code)
             const frame = document.getElementById('videoDecoderFrame');
             
             if (chosenScraperServerNode === 'vidsrc_xyz') {
@@ -469,6 +563,7 @@
             } else if (chosenScraperServerNode === 'embed_su') {
                 frame.src = `https://embed.su/embed/movie/${tmdbId}`;
             }
+<<<<<<< HEAD
 
             // Save to Continue Watching History
             const item = { id: tmdbId, title: title, timestamp: new Date().getTime() };
@@ -480,6 +575,8 @@
             updateButtonStates();
             
             document.getElementById('nowPlayingTitle').scrollIntoView({ behavior: 'smooth' });
+=======
+>>>>>>> 9d7f165 (Update site code)
         }
 
         function switchStreamServer(serverKey) {
@@ -488,6 +585,7 @@
                 const button = document.getElementById('btn-' + srv);
                 if (!button) return;
                 if (srv === serverKey) {
+<<<<<<< HEAD
                     button.className = "text-cyberCyan font-bold border border-cyberCyan/30 bg-cyberCyan/10 px-2 py-0.5 rounded";
                 } else {
                     button.className = "hover:text-cyberCyan transition-colors px-2 py-0.5 rounded";
@@ -626,11 +724,31 @@
             const inputField = document.getElementById('movieEngineSearch');
             const searchVal = inputField.value.trim();
             if (!searchVal || evaluateSecurityThreat(searchVal)) return;
+=======
+                    button.className = "text-neonCyan font-bold border border-neonCyan/30 bg-neonCyan/10 px-2 py-0.5 rounded";
+                } else {
+                    button.className = "hover:text-neonCyan transition-colors px-2 py-0.5 rounded";
+                }
+            });
+            chosenScraperServerNode = serverKey;
+            triggerAutomatedVideoPull(currentActiveMovieId, currentActiveMovieTitle);
+        }
+
+        async function executeGlobalDatabaseSearch(searchTerm) {
+            const searchVal = searchTerm ? searchTerm.trim() : "";
+            if (!searchVal) return;
+>>>>>>> 9d7f165 (Update site code)
 
             const gridContainer = document.getElementById('movieGridRowsEngine');
             gridContainer.innerHTML = `
                 <div>
+<<<<<<< HEAD
                     <h2 class="text-white text-xs font-mono font-bold mb-4 tracking-wider uppercase pl-3 border-l-4 border-cyberCyan animate-pulse">Pulling streams from international databases...</h2>
+=======
+                    <h2 class="text-white text-lg font-bold mb-4 tracking-wider uppercase pl-3 border-l-4 border-neonCyan animate-pulse">
+                        Pulling live tracks across international networks...
+                    </h2>
+>>>>>>> 9d7f165 (Update site code)
                     <div id="searchResultsDisplay" class="grid grid-cols-2 md:grid-cols-5 gap-5"></div>
                 </div>`;
 
@@ -640,7 +758,11 @@
                 const displayArea = document.getElementById('searchResultsDisplay');
 
                 if (!data.results || data.results.length === 0) {
+<<<<<<< HEAD
                     displayArea.innerHTML = `<p class="text-gray-500 font-mono col-span-full">No active matching streams found.</p>`;
+=======
+                    displayArea.innerHTML = `<p class="text-gray-500 font-mono col-span-full">No active matching streams running on server networks.</p>`;
+>>>>>>> 9d7f165 (Update site code)
                     return;
                 }
 
@@ -648,6 +770,7 @@
                 data.results.slice(0, 15).forEach(movie => {
                     if (!movie.poster_path) return;
                     const cleanTitle = movie.title.replace(/'/g, "\\'");
+<<<<<<< HEAD
                     displayArea.innerHTML += createMovieCardHtml(movie, cleanTitle);
                 });
             } catch (err) {
@@ -664,6 +787,30 @@
                 { title: "Trending Worldwide (Global Feed)", url: `${TMDB_BASE_URL}/trending/movie/day?api_key=${TMDB_API_KEY}` },
                 { title: "Top Cinema & Blockbusters", url: `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}` },
                 { title: "Highest Rated 4K Master Cuts", url: `${TMDB_BASE_URL}/movie/top_rated?api_key=${TMDB_API_KEY}` }
+=======
+                    displayArea.innerHTML += `
+                        <div onclick="triggerAutomatedVideoPull('${movie.id}', '${cleanTitle}')" class="bg-frostedStone rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-900 hover:border-neonCyan hover:shadow-cyanGlow group">
+                            <img src="${TMDB_IMG_URL}${movie.poster_path}" alt="${movie.title}" class="w-full h-64 object-cover">
+                            <div class="p-4">
+                                <span class="text-[9px] text-neonCyan font-mono bg-neonCyan/10 border border-neonCyan/20 px-1.5 py-0.5 rounded uppercase font-bold">STREAM 4K ULTRA</span>
+                                <div class="text-white text-xs font-bold tracking-wide mt-2 truncate uppercase">${movie.title}</div>
+                            </div>
+                        </div>`;
+                });
+            } catch (err) {
+                document.getElementById('searchResultsDisplay').innerHTML = `<p class="text-red-500 font-mono col-span-full">> Local Connection Error: Handshake timed out.</p>`;
+            }
+        }
+
+        async function deployGlobalMovieChannels() {
+            const container = document.getElementById('movieGridRowsEngine');
+            container.innerHTML = `<div class="text-center font-mono text-sm py-10 animate-pulse text-gray-500">> POLLING LIVE APIS FOR REALS GLOBAL FILM DATABASES...</div>`;
+
+            const endpointsConfig = [
+                { title: "Trending Globally (Netflix & Prime Active Databases)", url: `${TMDB_BASE_URL}/trending/movie/day?api_key=${TMDB_API_KEY}` },
+                { title: "Adrenaline Action Channel (MovieBox Live Networks)", url: `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}` },
+                { title: "Deep Space Sci-Fi Grid (Apple TV & Cinema Feeds)", url: `${TMDB_BASE_URL}/movie/top_rated?api_key=${TMDB_API_KEY}` }
+>>>>>>> 9d7f165 (Update site code)
             ];
 
             try {
@@ -677,15 +824,24 @@
 
                     let blockHtml = `
                         <div>
+<<<<<<< HEAD
                             <h3 class="text-white text-sm font-extrabold mb-4 tracking-wider uppercase pl-3 border-l-4 border-cyberCyan flex items-center gap-2">
                                 ${channel.title}
                                 <span class="text-[9px] font-mono text-cyberCyan bg-cyberCyan/10 border border-cyberCyan/20 py-0.5 px-2 rounded-full font-bold">CONNECTED</span>
                             </h3>
                             <div class="flex space-x-5 overflow-x-auto pb-4 scrollbar-hide px-1">`;
+=======
+                            <h3 class="text-white text-sm font-extrabold mb-4 tracking-wider uppercase pl-3 border-l-4 border-neonCyan flex items-center gap-2">
+                                ${channel.title}
+                                <span class="text-[9px] font-mono tracking-widest text-neonCyan bg-neonCyan/10 border border-neonCyan/20 py-0.5 px-2 rounded-full font-bold">AUTO AUTOMATED CONNECTED</span>
+                            </h3>
+                            <div class="flex space-x-5 overflow-x-auto pb-5 scrollbar-hide px-1">`;
+>>>>>>> 9d7f165 (Update site code)
 
                     filmsList.slice(0, 15).forEach(movie => {
                         if (!movie.poster_path) return;
                         const cleanTitle = movie.title.replace(/'/g, "\\'");
+<<<<<<< HEAD
                         const qualityBadge = (movie.vote_average > 7) ? "4K ULTRA HD" : "1080P FULL HD";
                         blockHtml += `
                             <div onclick="triggerAutomatedVideoPull('${movie.id}', '${cleanTitle}')" class="min-w-[170px] max-w-[170px] bg-frostedCard rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-900 hover:border-cyberPurple hover:shadow-purpleGlow group flex-shrink-0">
@@ -693,6 +849,14 @@
                                 <div class="p-3">
                                     <div class="text-[8px] text-cyberCyan font-mono bg-cyberCyan/10 border border-cyberCyan/20 px-1.5 py-0.5 rounded inline-block font-bold uppercase">${qualityBadge}</div>
                                     <div class="text-white text-[11px] font-bold tracking-wide mt-2 truncate uppercase group-hover:text-cyberCyan transition-colors">${movie.title}</div>
+=======
+                        blockHtml += `
+                            <div onclick="triggerAutomatedVideoPull('${movie.id}', '${cleanTitle}')" class="min-w-[180px] max-w-[180px] bg-frostedStone rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-900 hover:border-electricViolet hover:shadow-violetGlow group">
+                                <img src="${TMDB_IMG_URL}${movie.poster_path}" alt="${movie.title}" class="w-full h-56 object-cover">
+                                <div class="p-3">
+                                    <div class="text-[9px] text-neonCyan font-mono bg-neonCyan/10 border border-neonCyan/20 px-1.5 py-0.5 rounded inline-block font-bold uppercase">4K ULTRA HD</div>
+                                    <div class="text-white text-[11px] font-bold tracking-wide mt-2 truncate uppercase group-hover:text-neonCyan transition-colors">${movie.title}</div>
+>>>>>>> 9d7f165 (Update site code)
                                 </div>
                             </div>`;
                     });
@@ -701,6 +865,7 @@
                     container.innerHTML += blockHtml;
                 });
             } catch (error) {
+<<<<<<< HEAD
                 container.innerHTML = `<div class="text-defenderRed font-mono text-xs py-10">> Database pipeline connection issue.</div>`;
             }
         }
@@ -721,8 +886,15 @@
             if (msg && banner && txt) {
                 txt.innerText = msg;
                 banner.classList.remove('hidden');
+=======
+                container.innerHTML = `<div class="text-red-500 font-mono text-xs py-10">> Cloud Connection Failure. Check database sync parameters...</div>`;
+>>>>>>> 9d7f165 (Update site code)
             }
         }
     </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 9d7f165 (Update site code)
