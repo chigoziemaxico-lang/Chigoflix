@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chigoflix - Ultra-Secure Global Streaming Platform & Data Pipeline</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slateDark: '#0A0C10',
+                        frostedCard: '#12161F',
+                        cyberCyan: '#00F0FF',
+                        cyberPurple: '#8A2BE2',
+                        defenderRed: '#FF2A6D',
+                        defenderGreen: '#05FFA1'
+                    },
+                    boxShadow: {
+                        cyanGlow: '0 0 20px rgba(0, 240, 255, 0.5)',
+                        purpleGlow: '0 0 20px rgba(138, 43, 226, 0.5)',
+                        threatAlert: '0 0 25px rgba(255, 42, 109, 0.6)',
+                        ultraDecoder: '0 0 35px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(138, 43, 226, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .animate-glow { animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
+</head>
+<body class="bg-slateDark text-white min-h-screen selection:bg-cyberCyan selection:text-black font-sans overflow-x-hidden">
+
+    <!-- REAL-TIME AI CYBER DEFENDER HUD BANNER -->
+    <div id="securityHudBanner" class="bg-frostedCard border-b border-cyberCyan/30 px-4 py-2 flex items-center justify-between text-xs font-mono">
+        <div class="flex items-center space-x-3">
+            <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-defenderGreen opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-defenderGreen"></span>
+            </span>
+            <span class="text-cyberCyan font-bold uppercase tracking-wider">AI CYBER DEFENDER: ACTIVE</span>
+            <span class="hidden md:inline text-gray-400">| Shields Online</span>
+            <span class="hidden lg:inline text-gray-500">| Threat Level: ZERO</span>
+        </div>
+        <div id="securityCounterLogs" class="text-[11px] font-mono text-gray-400">
+            Neutralized Threats: <span id="neutralizedCount" class="text-defenderGreen font-bold">0</span>
+        </div>
+    </div>
+
+    <!-- LAYER 1: SECURE AUTHENTIC USER PRIVACY GATE -->
+    <div id="userGateOverlay" class="fixed inset-0 z-50 bg-slateDark flex items-center justify-center p-4 transition-all duration-500">
+        <div class="w-full max-w-md bg-frostedCard border border-gray-800 rounded-2xl p-8 relative shadow-purpleGlow">
+            <div class="flex flex-col items-center mb-8">
+                <svg class="w-14 h-14 drop-shadow-[0_0_10px_#00F0FF]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M75 25C65 12 40 12 25 25C10 40 10 65 25 75C40 88 65 88 75 75" stroke="#8A2BE2" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M45 35L65 50L45 65V35Z" fill="#00F0FF" />
+                </svg>
+                <h1 class="text-2xl font-black mt-3 tracking-widest text-white">CHIGO<span class="text-cyberCyan">FLIX</span></h1>
+                <p class="text-[10px] text-gray-500 tracking-wider mt-1 uppercase">4K Ultra Global Stream Core</p>
+            </div>
+            <form onsubmit="handleSecureGateAccess(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Secure User Identifier</label>
+                    <input type="email" id="gateEmail" required oninput="evaluateSecurityThreat(this.value)" class="w-full bg-slateDark border border-gray-800 rounded-xl py-3 px-4 text-white text-sm focus:outline-none focus:border-cyberCyan focus:shadow-cyanGlow" placeholder="user@chigoflix.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Access Token / Password</label>
+                    <input type="password" id="gatePassword" required oninput="evaluateSecurityThreat(this.value)" class="w-full bg-slateDark border border-gray-800 rounded-xl py-3 px-4 text-white text-sm focus:outline-none focus:border-cyberPurple focus:shadow-purpleGlow" placeholder="••••••••">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Confirm Identity Token</label>
+                    <input type="password" id="gateConfirmPassword" required oninput="evaluateSecurityThreat(this.value)" class="w-full bg-slateDark border border-gray-800 rounded-xl py-3 px-4 text-white text-sm focus:outline-none focus:border-cyberCyan focus:shadow-cyanGlow" placeholder="••••••••">
+                </div>
+                <div id="gateErrorLog" class="text-xs font-mono hidden bg-red-950/40 border border-defenderRed/50 p-3 rounded-lg text-defenderRed"></div>
+                <button type="submit" class="w-full bg-gradient-to-r from-cyberPurple to-cyberCyan text-white font-bold py-3.5 rounded-xl text-xs tracking-wider shadow-cyanGlow transform active:scale-95 transition-all uppercase">AUTHENTICATE & ENTER PORTAL</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- LAYER 2: MOVIEBOX DASHBOARD & PIPELINE -->
+    <div id="applicationDashboard" class="opacity-10 pointer-events-none transition-opacity duration-700">
+        
+        <!-- Live Admin Site Broadcast Banner -->
+        <div id="adminAnnouncementBanner" class="bg-gradient-to-r from-cyberPurple/30 via-cyberCyan/20 to-cyberPurple/30 border-b border-cyberCyan/30 px-4 py-2 text-center text-xs font-mono text-cyberCyan hidden">
+            <span id="adminAnnouncementText">Welcome to Chigoflix 4K Ultra HD Streaming Core!</span>
+        </div>
+
+        <!-- Main Header Navigation Bar -->
+        <nav class="bg-slateDark/90 backdrop-blur-md border-b border-frostedCard px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-4 sticky top-0 z-40">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.reload()">
+                <svg class="w-10 h-10 drop-shadow-[0_0_8px_#00F0FF]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M75 25C65 12 40 12 25 25C10 40 10 65 25 75C40 88 65 88 75 75" stroke="#8A2BE2" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M45 35L65 50L45 65V35Z" fill="#00F0FF" />
+                </svg>
+                <span class="text-2xl font-black tracking-wider text-white">CHIGO<span class="text-cyberCyan">FLIX</span></span>
+            </div>
+            
+            <!-- Dual Search Engine Inputs -->
+            <div class="w-full lg:w-2/3 flex flex-col sm:flex-row gap-2">
+                <!-- Auto Search Input -->
+                <div class="relative flex-1">
+                    <input
+                        id="movieEngineSearch"
+                        type="text"
+                        placeholder="Search global databases..."
+                        oninput="evaluateSecurityThreat(this.value); evaluateFirewallAndBypass(this.value); handleAutoSearch(this.value);"
+                        class="w-full bg-frostedCard border border-gray-800 text-white placeholder-gray-500 rounded-full py-2.5 px-5 text-xs focus:outline-none focus:border-cyberCyan focus:shadow-cyanGlow transition-all"
+                    />
+                    <span class="absolute right-4 top-2.5 text-[10px] text-cyberCyan font-mono uppercase">AUTOSEARCH</span>
+                </div>
+
+                <!-- Chigo-AI Search Input -->
+                <div class="relative flex-1">
+                    <input
+                        id="aiAssistantSearch"
+                        type="text"
+                        placeholder="🤖 Ask Chigo-AI (e.g. 'Sci-Fi 4K movies')..."
+                        oninput="evaluateSecurityThreat(this.value)"
+                        onkeydown="if(event.key==='Enter') executeAISearchPrompt();"
+                        class="w-full bg-slateDark border border-cyberPurple/50 text-white placeholder-gray-400 rounded-full py-2.5 px-5 text-xs focus:outline-none focus:border-cyberPurple focus:shadow-purpleGlow transition-all"
+                    />
+                    <button onclick="executeAISearchPrompt()" class="absolute right-2 top-1.5 bg-gradient-to-r from-cyberPurple to-cyberCyan text-white text-[10px] font-bold px-3 py-1.5 rounded-full hover:shadow-cyanGlow transition-all">AI SEARCH</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Global Database Stream Sources & Category Tabs -->
+        <div class="bg-frostedCard/50 border-b border-gray-800/80 px-6 py-3 flex items-center space-x-3 overflow-x-auto scrollbar-hide text-xs font-mono">
+            <span class="text-gray-500 uppercase text-[10px] font-bold mr-2">Databases:</span>
+            <button onclick="filterDatabase('all')" id="db-all" class="bg-cyberCyan/20 text-cyberCyan border border-cyberCyan/40 px-3 py-1 rounded-full font-bold">All Global Feeds</button>
+            <button onclick="filterDatabase('netflix')" id="db-netflix" class="bg-frostedCard hover:border-red-500 border border-gray-800 px-3 py-1 rounded-full transition-all text-red-400">Netflix Originals</button>
+            <button onclick="filterDatabase('prime')" id="db-prime" class="bg-frostedCard hover:border-sky-400 border border-gray-800 px-3 py-1 rounded-full transition-all text-sky-400">Prime Video</button>
+            <button onclick="filterDatabase('apple')" id="db-apple" class="bg-frostedCard hover:border-gray-300 border border-gray-800 px-3 py-1 rounded-full transition-all text-gray-200">Apple TV+</button>
+            <button onclick="filterDatabase('moviebox')" id="db-moviebox" class="bg-frostedCard hover:border-cyberPurple border border-gray-800 px-3 py-1 rounded-full transition-all text-cyberPurple">MovieBox HD</button>
+        </div>
+
+        <main class="max-w-7xl mx-auto px-4 mt-6 pb-20">
+            
+            <!-- Trending Spotlight Hero Banner -->
+            <div id="heroSpotlight" class="relative w-full h-[320px] md:h-[400px] rounded-2xl overflow-hidden border border-gray-800 mb-8 bg-black shadow-ultraDecoder">
+                <img id="heroBackdrop" src="" alt="Hero Backdrop" class="absolute inset-0 w-full h-full object-cover opacity-40">
+                <div class="absolute inset-0 bg-gradient-to-t from-slateDark via-slateDark/40 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6 z-10 space-y-3 max-w-2xl">
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-cyberCyan text-black font-black text-[10px] px-2 py-0.5 rounded font-mono uppercase">4K ULTRA HD SPOTLIGHT</span>
+                        <span id="heroRating" class="bg-cyberPurple/30 border border-cyberPurple text-cyberPurple text-[10px] px-2 py-0.5 rounded font-mono">Rating: 8.5</span>
+                    </div>
+                    <h1 id="heroTitle" class="text-2xl md:text-4xl font-black uppercase text-white tracking-wider">Loading Worldwide Spotlight...</h1>
+                    <p id="heroOverview" class="text-xs text-gray-300 line-clamp-2 leading-relaxed"></p>
+                    <div class="flex items-center space-x-3 pt-2">
+                        <button id="heroPlayBtn" onclick="" class="bg-gradient-to-r from-cyberPurple to-cyberCyan text-white font-bold text-xs px-6 py-3 rounded-xl shadow-cyanGlow active:scale-95 transition-all uppercase flex items-center gap-2">
+                            <span>▶ Watch Movie Now</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Video Player Viewport -->
+            <div class="mb-12">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                    <div>
+                        <h2 id="nowPlayingTitle" class="text-lg md:text-xl font-black tracking-wider uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyberCyan to-cyberPurple">Loading Stream Core...</h2>
+                        <p class="text-[11px] text-gray-500 font-mono mt-1 uppercase tracking-wider">Target Resolution: <span class="text-cyberCyan font-bold">4K UHD / 1080p Target Engine</span></p>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="toggleWatchlist()" id="watchlistBtn" class="bg-frostedCard border border-gray-800 hover:border-cyberCyan text-xs px-3 py-1.5 rounded-xl font-mono text-gray-300 hover:text-cyberCyan transition-all">
+                            + Watchlist
+                        </button>
+                        <button onclick="toggleFavorite()" id="favoriteBtn" class="bg-frostedCard border border-gray-800 hover:border-cyberPurple text-xs px-3 py-1.5 rounded-xl font-mono text-gray-300 hover:text-cyberPurple transition-all">
+                            ♥ Favorite
+                        </button>
+
+                        <!-- Multi-Server Resolver Selector -->
+                        <div class="flex items-center gap-1.5 bg-frostedCard border border-gray-800 px-3 py-1.5 rounded-xl text-xs font-mono ml-auto">
+                            <span class="text-[10px] text-gray-500 uppercase mr-1">Resolver Node:</span>
+                            <button onclick="switchStreamServer('vidsrc_xyz')" id="btn-vidsrc_xyz" class="text-cyberCyan font-bold border border-cyberCyan/30 bg-cyberCyan/10 px-2 py-0.5 rounded">Server Alpha</button>
+                            <button onclick="switchStreamServer('vidsrc_to')" id="btn-vidsrc_to" class="hover:text-cyberCyan transition-colors px-2 py-0.5 rounded">Server Beta</button>
+                            <button onclick="switchStreamServer('embed_su')" id="btn-embed_su" class="hover:text-cyberCyan transition-colors px-2 py-0.5 rounded">Server Gamma</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-frostedCard shadow-ultraDecoder">
+                    <iframe id="videoDecoderFrame" class="absolute inset-0 w-full h-full z-10 border-0 bg-zinc-950" allowfullscreen allow="autoplay; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="no-referrer"></iframe>
+                </div>
+            </div>
+
+            <!-- DATA PIPELINE & SECURITY ARCHITECTURE MONITORING BOARD -->
+            <div class="bg-frostedCard border border-gray-800 rounded-2xl p-6 mb-12 font-mono">
+                <div class="flex items-center justify-between mb-4 border-b border-gray-800 pb-3">
+                    <h3 class="text-xs text-cyberCyan font-bold uppercase tracking-wider">📡 Worldwide Data Pipeline & Threat Shield Engine</h3>
+                    <span class="text-[10px] text-gray-500 uppercase">Live Pipeline Monitoring</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                    <div class="bg-slateDark p-3 rounded-xl border border-gray-800">
+                        <div class="text-gray-500 text-[10px]">1. API FETCH STAGE</div>
+                        <div class="text-white font-bold mt-1">Global TMDB Sync</div>
+                        <div class="text-defenderGreen text-[10px] mt-1">● Active Response (200 OK)</div>
+                    </div>
+                    <div class="bg-slateDark p-3 rounded-xl border border-gray-800">
+                        <div class="text-gray-500 text-[10px]">2. RESOLUTION TARGETING</div>
+                        <div class="text-cyberCyan font-bold mt-1">4K UHD / 1080p Engine</div>
+                        <div class="text-cyberCyan text-[10px] mt-1">● Long-Range Up-Scaler</div>
+                    </div>
+                    <div class="bg-slateDark p-3 rounded-xl border border-gray-800">
+                        <div class="text-gray-500 text-[10px]">3. SERVER RESOLVER</div>
+                        <div id="activeServerText" class="text-cyberPurple font-bold mt-1">Server Alpha Active</div>
+                        <div class="text-cyberPurple text-[10px] mt-1">● Auto-Failover Enabled</div>
+                    </div>
+                    <div class="bg-slateDark p-3 rounded-xl border border-gray-800">
+                        <div class="text-gray-500 text-[10px]">4. AI DEFENDER SHIELD</div>
+                        <div class="text-defenderGreen font-bold mt-1">Zero Breach Level</div>
+                        <div class="text-defenderGreen text-[10px] mt-1">● Cyber Attack Counter On</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Horizontal Scrolling Rows -->
+            <div class="space-y-10">
+                
+                <!-- Continue Watching -->
+                <div id="continueWatchingSection" class="hidden">
+                    <h3 class="text-white text-sm font-extrabold mb-4 tracking-wider uppercase pl-3 border-l-4 border-cyberCyan flex items-center gap-2">
+                        Continue Watching
+                        <span class="text-[9px] font-mono tracking-widest text-cyberCyan bg-cyberCyan/10 border border-cyberCyan/20 py-0.5 px-2 rounded-full font-bold">RESUME</span>
+                    </h3>
+                    <div id="continueWatchingGrid" class="flex space-x-5 overflow-x-auto pb-4 scrollbar-hide"></div>
+                </div>
+
+                <!-- My Watchlist -->
+                <div id="userWatchlistSection" class="hidden">
+                    <h3 class="text-white text-sm font-extrabold mb-4 tracking-wider uppercase pl-3 border-l-4 border-cyberPurple flex items-center gap-2">
+                        My Watchlist
+                        <span class="text-[9px] font-mono tracking-widest text-cyberPurple bg-cyberPurple/10 border border-cyberPurple/20 py-0.5 px-2 rounded-full font-bold">SAVED</span>
+                    </h3>
+                    <div id="userWatchlistGrid" class="flex space-x-5 overflow-x-auto pb-4 scrollbar-hide"></div>
+                </div>
+
+                <!-- My Favorites -->
+                <div id="userFavoritesSection" class="hidden">
+                    <h3 class="text-white text-sm font-extrabold mb-4 tracking-wider uppercase pl-3 border-l-4 border-pink-500 flex items-center gap-2">
+                        Favorites
+                        <span class="text-[9px] font-mono tracking-widest text-pink-400 bg-pink-500/10 border border-pink-500/20 py-0.5 px-2 rounded-full font-bold">FAVORITES</span>
+                    </h3>
+                    <div id="userFavoritesGrid" class="flex space-x-5 overflow-x-auto pb-4 scrollbar-hide"></div>
+                </div>
+
+                <!-- Worldwide Automated Movie Channels -->
+                <div id="movieGridRowsEngine" class="space-y-10"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- LAYER 3: HIDDEN ADMIN CONSOLE & DEFENDER LOGS -->
+    <div id="hiddenAdminConsole" class="hidden min-h-screen bg-slateDark p-6">
+        <div class="max-w-4xl mx-auto bg-frostedCard p-8 rounded-2xl border border-cyberCyan shadow-cyanGlow space-y-8 font-mono">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyberCyan to-cyberPurple">CHIGO-AI ROOT & THREAT LOGS</h2>
+                    <p class="text-[10px] text-gray-500 mt-0.5">DIRECT ADMIN CONTROL INTERCEPT ('08087111364')</p>
+                </div>
+                <button onclick="window.location.reload()" class="bg-red-500/10 border border-red-500/30 text-red-400 text-xs px-4 py-2 rounded-xl hover:bg-red-500 hover:text-black transition-all">EXIT PORTAL</button>
+            </div>
+
+            <!-- Threat Logs Display -->
+            <div class="space-y-3">
+                <h3 class="text-defenderRed font-bold uppercase text-xs">AI Security Defender Incident Logs</h3>
+                <div id="adminThreatLogsArea" class="bg-slateDark p-4 rounded-xl border border-gray-800 max-h-48 overflow-y-auto text-[11px] text-gray-400 space-y-1">
+                    <p class="text-gray-600 font-italic">> No malicious intrusions detected in current session.</p>
+                </div>
+            </div>
+
+            <!-- Site Broadcaster -->
+            <div class="space-y-4 text-xs">
+                <h3 class="text-cyberCyan font-bold uppercase">Live Announcement Publisher</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="adminBroadcastInput" placeholder="Enter broadcast announcement..." class="bg-slateDark border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-cyberCyan">
+                    <button onclick="updateSiteAnnouncement()" class="bg-cyberCyan text-black font-bold p-3 rounded-xl hover:shadow-cyanGlow transition-all uppercase">Broadcast Live</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT LOGIC ENGINE -->
+    <script>
+        const TMDB_API_KEY = "15d2fb670001422d4d858257578007d6";
+        const TMDB_BASE_URL = "https://api.themoviedb.org/3";
+        const TMDB_IMG_URL = "https://image.tmdb.org/t/p/w500";
+        const TMDB_HD_IMG_URL = "https://image.tmdb.org/t/p/original";
+
+        let currentActiveMovieId = "533535";
+        let currentActiveMovieTitle = "Deadpool & Wolverine";
+        let chosenScraperServerNode = "vidsrc_xyz";
+        let autoSearchTimer = null;
+        let blockedThreatsCount = 0;
+
+        // Persistent User Stores
+        let continueWatchingStore = JSON.parse(localStorage.getItem('chigoflix_history')) || [];
+        let watchlistStore = JSON.parse(localStorage.getItem('chigoflix_watchlist')) || [];
+        let favoritesStore = JSON.parse(localStorage.getItem('chigoflix_favorites')) || [];
+
+        // Real-Time AI Threat Vector Detector & Defender
+        function evaluateSecurityThreat(inputVal) {
+            if (!inputVal) return;
+            
+            // Cyber Attack Signatures (SQLi, XSS, Path Traversal, Command Injections)
+            const attackPatterns = [
+                /<script/i, /select\s+.*from/i, /drop\s+table/i, /union\s+select/i,
+                /javascript:/i, /eval\(/i, /\.\.\//, /exec\(/i, /concat\(/i
+            ];
+
+            for (let pattern of attackPatterns) {
+                if (pattern.test(inputVal)) {
+                    blockedThreatsCount++;
+                    document.getElementById('neutralizedCount').innerText = blockedThreatsCount;
+                    
+                    // Flash Threat HUD Alert
+                    const hud = document.getElementById('securityHudBanner');
+                    hud.classList.add('shadow-threatAlert', 'border-defenderRed');
+                    setTimeout(() => hud.classList.remove('shadow-threatAlert', 'border-defenderRed'), 2000);
+
+                    // Log threat event
+                    const logArea = document.getElementById('adminThreatLogsArea');
+                    if (logArea) {
+                        const time = new Date().toLocaleTimeString();
+                        logArea.innerHTML = `<p class="text-defenderRed">[${time}] ATTACK VECTOR BLOCKED: "${inputVal.replace(/</g, '&lt;')}" neutralized by Chigo AI Defender.</p>` + logArea.innerHTML;
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Layer 1 Safe Gate Access
+        function handleSecureGateAccess(event) {
+            event.preventDefault();
+            const pass = document.getElementById('gatePassword').value;
+            const confirmPass = document.getElementById('gateConfirmPassword').value;
+            const errorLog = document.getElementById('gateErrorLog');
+
+            if (evaluateSecurityThreat(pass)) {
+                errorLog.innerText = "[DEFENDER ALERT]: Malicious threat vector neutralized. Access denied.";
+                errorLog.classList.remove('hidden');
+                return;
+            }
+
+            if (pass !== confirmPass) {
+                errorLog.innerText = "[ERROR]: Security identity tokens do not match.";
+                errorLog.classList.remove('hidden');
+                return;
+            }
+
+            errorLog.classList.add('hidden');
+            document.getElementById('userGateOverlay').classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                document.getElementById('userGateOverlay').classList.add('hidden');
+                const portal = document.getElementById('applicationDashboard');
+                portal.classList.remove('opacity-10', 'pointer-events-none');
+                portal.classList.add('opacity-100');
+
+                initializeSpotlightHero();
+                deployGlobalMovieChannels();
+                triggerAutomatedVideoPull(currentActiveMovieId, currentActiveMovieTitle);
+                syncUserSavedSections();
+                syncAdminAnnouncements();
+            }, 400);
+        }
+
+        // Root Admin Secret Key Trigger
+        function evaluateFirewallAndBypass(query) {
+            if (query.trim() === '08087111364') {
+                document.getElementById('applicationDashboard').classList.add('hidden');
+                document.getElementById('userGateOverlay').classList.add('hidden');
+                document.getElementById('hiddenAdminConsole').classList.remove('hidden');
+            }
+        }
+
+        // Debounced Real-Time Search
+        function handleAutoSearch(query) {
+            clearTimeout(autoSearchTimer);
+            if (!query.trim()) {
+                deployGlobalMovieChannels();
+                return;
+            }
+            autoSearchTimer = setTimeout(() => {
+                executeGlobalDatabaseSearch();
+            }, 350);
+        }
+
+        // Chigo-AI Natural Language Search
+        async function executeAISearchPrompt() {
+            const promptInput = document.getElementById('aiAssistantSearch');
+            const queryText = promptInput.value.trim();
+            if (!queryText || evaluateSecurityThreat(queryText)) return;
+
+            const gridContainer = document.getElementById('movieGridRowsEngine');
+            gridContainer.innerHTML = `
+                <div>
+                    <h2 class="text-cyberCyan text-xs font-mono font-bold mb-4 uppercase pl-3 border-l-4 border-cyberCyan animate-pulse">
+                        🤖 CHIGO-AI SCANNING WORLDWIDE DATABASES FOR: "${queryText}"...
+                    </h2>
+                    <div id="searchResultsDisplay" class="grid grid-cols-2 md:grid-cols-5 gap-5"></div>
+                </div>`;
+
+            try {
+                const cleanedQuery = queryText.replace(/(find|show|me|get|movies|movie|4k|hd|top|best)/gi, '').trim() || queryText;
+                const response = await fetch(`${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(cleanedQuery)}`);
+                const data = await response.json();
+                const displayArea = document.getElementById('searchResultsDisplay');
+
+                if (!data.results || data.results.length === 0) {
+                    displayArea.innerHTML = `<p class="text-gray-500 font-mono col-span-full">No streams matched the AI prompt.</p>`;
+                    return;
+                }
+
+                displayArea.innerHTML = "";
+                data.results.slice(0, 15).forEach(movie => {
+                    if (!movie.poster_path) return;
+                    const cleanTitle = movie.title.replace(/'/g, "\\'");
+                    displayArea.innerHTML += createMovieCardHtml(movie, cleanTitle);
+                });
+            } catch (err) {
+                document.getElementById('searchResultsDisplay').innerHTML = `<p class="text-red-500 font-mono col-span-full">> AI Database Connection Error.</p>`;
+            }
+        }
+
+        // Spotlight Hero Initialization
+        async function initializeSpotlightHero() {
+            try {
+                const response = await fetch(`${TMDB_BASE_URL}/trending/movie/day?api_key=${TMDB_API_KEY}`);
+                const data = await response.json();
+                if (data.results && data.results.length > 0) {
+                    const hero = data.results[0];
+                    document.getElementById('heroTitle').innerText = hero.title;
+                    document.getElementById('heroOverview').innerText = hero.overview || "Stream top-tier 4K Ultra HD content dynamically synced from live global film servers.";
+                    document.getElementById('heroBackdrop').src = hero.backdrop_path ? `${TMDB_HD_IMG_URL}${hero.backdrop_path}` : `${TMDB_IMG_URL}${hero.poster_path}`;
+                    document.getElementById('heroRating').innerText = `Rating: ${hero.vote_average.toFixed(1)} / 10`;
+                    
+                    const playBtn = document.getElementById('heroPlayBtn');
+                    playBtn.onclick = () => triggerAutomatedVideoPull(hero.id, hero.title.replace(/'/g, "\\'"));
+                }
+            } catch (e) {
+                console.error("Spotlight initialization error", e);
+            }
+        }
+
+        // Stream Resolver Core
+        function triggerAutomatedVideoPull(tmdbId, title) {
+            currentActiveMovieId = tmdbId;
+            currentActiveMovieTitle = title;
+            document.getElementById('nowPlayingTitle').innerText = "Now Streaming: " + title + " [4K UHD Ultra]";
+            const frame = document.getElementById('videoDecoderFrame');
+            
+            if (chosenScraperServerNode === 'vidsrc_xyz') {
+                frame.src = `https://vidsrc.xyz/embed/movie/${tmdbId}`;
+            } else if (chosenScraperServerNode === 'vidsrc_to') {
+                frame.src = `https://vidsrc.to/embed/movie/${tmdbId}`;
+            } else if (chosenScraperServerNode === 'embed_su') {
+                frame.src = `https://embed.su/embed/movie/${tmdbId}`;
+            }
+
+            // Save to Continue Watching History
+            const item = { id: tmdbId, title: title, timestamp: new Date().getTime() };
+            continueWatchingStore = continueWatchingStore.filter(x => x.id !== tmdbId);
+            continueWatchingStore.unshift(item);
+            localStorage.setItem('chigoflix_history', JSON.stringify(continueWatchingStore));
+            
+            syncUserSavedSections();
+            updateButtonStates();
+            
+            document.getElementById('nowPlayingTitle').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchStreamServer(serverKey) {
+            const servers = ['vidsrc_xyz', 'vidsrc_to', 'embed_su'];
+            servers.forEach(srv => {
+                const button = document.getElementById('btn-' + srv);
+                if (!button) return;
+                if (srv === serverKey) {
+                    button.className = "text-cyberCyan font-bold border border-cyberCyan/30 bg-cyberCyan/10 px-2 py-0.5 rounded";
+                } else {
+                    button.className = "hover:text-cyberCyan transition-colors px-2 py-0.5 rounded";
+                }
+            });
+            chosenScraperServerNode = serverKey;
+            document.getElementById('activeServerText').innerText = serverKey === 'vidsrc_xyz' ? 'Server Alpha Active' : serverKey === 'vidsrc_to' ? 'Server Beta Active' : 'Server Gamma Active';
+            triggerAutomatedVideoPull(currentActiveMovieId, currentActiveMovieTitle);
+        }
+
+        // Database Source Tabs
+        async function filterDatabase(dbKey) {
+            const container = document.getElementById('movieGridRowsEngine');
+            const tabs = ['all', 'netflix', 'prime', 'apple', 'moviebox'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('db-' + t);
+                if (btn) {
+                    if (t === dbKey) {
+                        btn.className = "bg-cyberCyan/20 text-cyberCyan border border-cyberCyan/40 px-3 py-1 rounded-full font-bold";
+                    } else {
+                        btn.className = "bg-frostedCard border border-gray-800 px-3 py-1 rounded-full text-gray-400 hover:text-white transition-all";
+                    }
+                }
+            });
+
+            if (dbKey === 'all') {
+                deployGlobalMovieChannels();
+                return;
+            }
+
+            container.innerHTML = `<div class="text-center font-mono text-sm py-10 animate-pulse text-cyberCyan">> QUERYING DIRECT DATABASE FEED: ${dbKey.toUpperCase()}...</div>`;
+            try {
+                const queryMap = { netflix: "Netflix", prime: "Amazon", apple: "Apple TV", moviebox: "Action" };
+                const response = await fetch(`${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(queryMap[dbKey])}`);
+                const data = await response.json();
+
+                container.innerHTML = `
+                    <div>
+                        <h3 class="text-white text-sm font-extrabold mb-4 tracking-wider uppercase pl-3 border-l-4 border-cyberCyan flex items-center gap-2">
+                            ${dbKey.toUpperCase()} Direct Feed
+                            <span class="text-[9px] font-mono text-cyberCyan bg-cyberCyan/10 border border-cyberCyan/20 py-0.5 px-2 rounded-full font-bold">4K READY</span>
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-5"></div>
+                    </div>`;
+
+                const displayArea = container.querySelector('.grid');
+                if (data.results) {
+                    data.results.slice(0, 15).forEach(movie => {
+                        if (!movie.poster_path) return;
+                        const cleanTitle = movie.title.replace(/'/g, "\\'");
+                        displayArea.innerHTML += createMovieCardHtml(movie, cleanTitle);
+                    });
+                }
+            } catch (err) {
+                container.innerHTML = `<div class="text-defenderRed font-mono text-xs py-10">> Database feed connection error.</div>`;
+            }
+        }
+
+        // Reusable Movie Card Renderer
+        function createMovieCardHtml(movie, cleanTitle) {
+            const qualityBadge = (movie.vote_average > 7) ? "4K ULTRA HD" : "1080P FULL HD";
+            return `
+                <div onclick="triggerAutomatedVideoPull('${movie.id}', '${cleanTitle}')" class="bg-frostedCard rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-900 hover:border-cyberCyan hover:shadow-cyanGlow group">
+                    <img src="${TMDB_IMG_URL}${movie.poster_path}" alt="${movie.title}" class="w-full h-60 object-cover">
+                    <div class="p-3">
+                        <span class="text-[8px] text-cyberCyan font-mono bg-cyberCyan/10 border border-cyberCyan/20 px-1.5 py-0.5 rounded uppercase font-bold">${qualityBadge}</span>
+                        <div class="text-white text-xs font-bold tracking-wide mt-2 truncate uppercase group-hover:text-cyberCyan transition-colors">${movie.title}</div>
+                        <div class="text-[10px] text-gray-500 font-mono mt-1">Rating: ${movie.vote_average.toFixed(1)} / 10</div>
+                    </div>
+                </div>`;
+        }
+
+        // Watchlist & Favorites
+        function toggleWatchlist() {
+            const index = watchlistStore.findIndex(x => x.id === currentActiveMovieId);
+            if (index > -1) {
+                watchlistStore.splice(index, 1);
+            } else {
+                watchlistStore.push({ id: currentActiveMovieId, title: currentActiveMovieTitle });
+            }
+            localStorage.setItem('chigoflix_watchlist', JSON.stringify(watchlistStore));
+            syncUserSavedSections();
+            updateButtonStates();
+        }
+
+        function toggleFavorite() {
+            const index = favoritesStore.findIndex(x => x.id === currentActiveMovieId);
+            if (index > -1) {
+                favoritesStore.splice(index, 1);
+            } else {
+                favoritesStore.push({ id: currentActiveMovieId, title: currentActiveMovieTitle });
+            }
+            localStorage.setItem('chigoflix_favorites', JSON.stringify(favoritesStore));
+            syncUserSavedSections();
+            updateButtonStates();
+        }
+
+        function updateButtonStates() {
+            const inWatchlist = watchlistStore.some(x => x.id === currentActiveMovieId);
+            const inFavorites = favoritesStore.some(x => x.id === currentActiveMovieId);
+
+            const wBtn = document.getElementById('watchlistBtn');
+            const fBtn = document.getElementById('favoriteBtn');
+
+            if (wBtn) wBtn.className = inWatchlist ? "bg-cyberCyan text-black border border-cyberCyan font-bold text-xs px-3 py-1.5 rounded-xl font-mono transition-all" : "bg-frostedCard border border-gray-800 hover:border-cyberCyan text-xs px-3 py-1.5 rounded-xl font-mono text-gray-300 hover:text-cyberCyan transition-all";
+            if (fBtn) fBtn.className = inFavorites ? "bg-cyberPurple text-white border border-cyberPurple font-bold text-xs px-3 py-1.5 rounded-xl font-mono transition-all" : "bg-frostedCard border border-gray-800 hover:border-cyberPurple text-xs px-3 py-1.5 rounded-xl font-mono text-gray-300 hover:text-cyberPurple transition-all";
+        }
+
+        function syncUserSavedSections() {
+            renderSavedRow("continueWatchingSection", "continueWatchingGrid", continueWatchingStore, "border-cyberCyan");
+            renderSavedRow("userWatchlistSection", "userWatchlistGrid", watchlistStore, "border-cyberPurple");
+            renderSavedRow("userFavoritesSection", "userFavoritesGrid", favoritesStore, "border-pink-500");
+        }
+
+        function renderSavedRow(sectionId, gridId, list, borderClass) {
+            const sec = document.getElementById(sectionId);
+            const grid = document.getElementById(gridId);
+            if (!list || list.length === 0) {
+                sec.classList.add('hidden');
+                return;
+            }
+            sec.classList.remove('hidden');
+            grid.innerHTML = "";
+            list.forEach(item => {
+                grid.innerHTML += `
+                    <div onclick="triggerAutomatedVideoPull('${item.id}', '${item.title.replace(/'/g, "\\'")}')" class="min-w-[150px] max-w-[150px] bg-frostedCard rounded-xl p-3 border border-gray-800 hover:${borderClass} hover:scale-105 transition-all cursor-pointer flex-shrink-0">
+                        <div class="text-[8px] text-cyberCyan font-mono uppercase font-bold">4K READY</div>
+                        <div class="text-white text-xs font-bold mt-1 truncate uppercase">${item.title}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // Global Search
+        async function executeGlobalDatabaseSearch() {
+            const inputField = document.getElementById('movieEngineSearch');
+            const searchVal = inputField.value.trim();
+            if (!searchVal || evaluateSecurityThreat(searchVal)) return;
+
+            const gridContainer = document.getElementById('movieGridRowsEngine');
+            gridContainer.innerHTML = `
+                <div>
+                    <h2 class="text-white text-xs font-mono font-bold mb-4 tracking-wider uppercase pl-3 border-l-4 border-cyberCyan animate-pulse">Pulling streams from international databases...</h2>
+                    <div id="searchResultsDisplay" class="grid grid-cols-2 md:grid-cols-5 gap-5"></div>
+                </div>`;
+
+            try {
+                const response = await fetch(`${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(searchVal)}`);
+                const data = await response.json();
+                const displayArea = document.getElementById('searchResultsDisplay');
+
+                if (!data.results || data.results.length === 0) {
+                    displayArea.innerHTML = `<p class="text-gray-500 font-mono col-span-full">No active matching streams found.</p>`;
+                    return;
+                }
+
+                displayArea.innerHTML = "";
+                data.results.slice(0, 15).forEach(movie => {
+                    if (!movie.poster_path) return;
+                    const cleanTitle = movie.title.replace(/'/g, "\\'");
+                    displayArea.innerHTML += createMovieCardHtml(movie, cleanTitle);
+                });
+            } catch (err) {
+                document.getElementById('searchResultsDisplay').innerHTML = `<p class="text-defenderRed font-mono col-span-full">> Connection timed out.</p>`;
+            }
+        }
+
+        // Deploy Automatic Channels
+        async function deployGlobalMovieChannels() {
+            const container = document.getElementById('movieGridRowsEngine');
+            container.innerHTML = `<div class="text-center font-mono text-sm py-10 animate-pulse text-gray-500">> CONNECTING TO WORLDWIDE FILM FEEDS...</div>`;
+
+            const endpointsConfig = [
+                { title: "Trending Worldwide (Global Feed)", url: `${TMDB_BASE_URL}/trending/movie/day?api_key=${TMDB_API_KEY}` },
+                { title: "Top Cinema & Blockbusters", url: `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}` },
+                { title: "Highest Rated 4K Master Cuts", url: `${TMDB_BASE_URL}/movie/top_rated?api_key=${TMDB_API_KEY}` }
+            ];
+
+            try {
+                const promises = endpointsConfig.map(cat => fetch(cat.url).then(res => res.json()));
+                const resultsBlock = await Promise.all(promises);
+                container.innerHTML = ""; 
+
+                endpointsConfig.forEach((channel, index) => {
+                    const filmsList = resultsBlock[index].results || [];
+                    if (filmsList.length === 0) return;
+
+                    let blockHtml = `
+                        <div>
+                            <h3 class="text-white text-sm font-extrabold mb-4 tracking-wider uppercase pl-3 border-l-4 border-cyberCyan flex items-center gap-2">
+                                ${channel.title}
+                                <span class="text-[9px] font-mono text-cyberCyan bg-cyberCyan/10 border border-cyberCyan/20 py-0.5 px-2 rounded-full font-bold">CONNECTED</span>
+                            </h3>
+                            <div class="flex space-x-5 overflow-x-auto pb-4 scrollbar-hide px-1">`;
+
+                    filmsList.slice(0, 15).forEach(movie => {
+                        if (!movie.poster_path) return;
+                        const cleanTitle = movie.title.replace(/'/g, "\\'");
+                        const qualityBadge = (movie.vote_average > 7) ? "4K ULTRA HD" : "1080P FULL HD";
+                        blockHtml += `
+                            <div onclick="triggerAutomatedVideoPull('${movie.id}', '${cleanTitle}')" class="min-w-[170px] max-w-[170px] bg-frostedCard rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-900 hover:border-cyberPurple hover:shadow-purpleGlow group flex-shrink-0">
+                                <img src="${TMDB_IMG_URL}${movie.poster_path}" alt="${movie.title}" class="w-full h-56 object-cover">
+                                <div class="p-3">
+                                    <div class="text-[8px] text-cyberCyan font-mono bg-cyberCyan/10 border border-cyberCyan/20 px-1.5 py-0.5 rounded inline-block font-bold uppercase">${qualityBadge}</div>
+                                    <div class="text-white text-[11px] font-bold tracking-wide mt-2 truncate uppercase group-hover:text-cyberCyan transition-colors">${movie.title}</div>
+                                </div>
+                            </div>`;
+                    });
+
+                    blockHtml += `</div></div>`;
+                    container.innerHTML += blockHtml;
+                });
+            } catch (error) {
+                container.innerHTML = `<div class="text-defenderRed font-mono text-xs py-10">> Database pipeline connection issue.</div>`;
+            }
+        }
+
+        // Admin Broadcaster Functions
+        function updateSiteAnnouncement() {
+            const input = document.getElementById('adminBroadcastInput').value.trim();
+            if (!input || evaluateSecurityThreat(input)) return;
+            localStorage.setItem('chigoflix_announcement', input);
+            syncAdminAnnouncements();
+            alert("Broadcast published!");
+        }
+
+        function syncAdminAnnouncements() {
+            const msg = localStorage.getItem('chigoflix_announcement');
+            const banner = document.getElementById('adminAnnouncementBanner');
+            const txt = document.getElementById('adminAnnouncementText');
+            if (msg && banner && txt) {
+                txt.innerText = msg;
+                banner.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
