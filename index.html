@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chigoflix - Automated Multi-Source Premium MovieBox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slateGray: '#121417',
+                        frostedStone: '#1A1D24',
+                        neonCyan: '#00F0FF',
+                        electricViolet: '#8A2BE2',
+                    },
+                    boxShadow: {
+                        cyanGlow: '0 0 20px rgba(0, 240, 255, 0.7)',
+                        violetGlow: '0 0 20px rgba(138, 43, 226, 0.7)',
+                        ultraDecoder: '0 0 35px rgba(0, 240, 255, 0.25), inset 0 0 20px rgba(138, 43, 226, 0.35)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        body { cursor: pointer; }
+    </style>
+</head>
+<body class="bg-slateGray text-white min-h-screen font-sans overflow-x-hidden">
+
+    <div id="applicationDashboard">
+        <nav class="bg-slateGray border-b border-frostedStone px-6 py-4 flex items-center justify-between sticky top-0 z-40">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="window.location.reload()">
+                <svg class="w-10 h-10 drop-shadow-[0_0_8px_#00F0FF]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M75 25C65 12 40 12 25 25C10 40 10 65 25 75C40 88 65 88 75 75" stroke="#8A2BE2" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M45 35L65 50L45 65V35Z" fill="#00F0FF" />
+                </svg>
+                <span class="text-xl font-bold tracking-wider text-white">CHIGO<span class="text-neonCyan">FLIX</span></span>
+            </div>
+            
+            <form onsubmit="event.preventDefault(); executeGlobalDatabaseSearch(document.getElementById('movieEngineSearch').value);" class="w-1/3 flex space-x-2">
+                <input
+                    id="movieEngineSearch"
+                    type="text"
+                    placeholder="Search worldwide movies..."
+                    oninput="handleAutoSearch(this.value)"
+                    class="w-full bg-frostedStone border border-gray-800 text-white placeholder-gray-500 rounded-full py-2 px-5 focus:outline-none focus:border-neonCyan focus:shadow-cyanGlow transition-all"
+                />
+                <button type="submit" class="bg-neonCyan text-black font-bold px-6 py-2 rounded-full hover:shadow-cyanGlow transition-all">
+                    Search
+                </button>
+            </form>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-4 mt-8 pb-20">
+            <div class="mb-12">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                    <div>
+                        <h2 id="nowPlayingTitle" class="text-xl font-black tracking-wider uppercase text-transparent bg-clip-text bg-gradient-to-r from-neonCyan to-electricViolet">Loading 4K Stream Core...</h2>
+                        <p class="text-[11px] text-gray-500 font-mono mt-1 uppercase tracking-wider">Multi-Source Connectivity Matrix: <span class="text-neonCyan">All Platforms Auto-Unified Live</span></p>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 bg-frostedStone border border-gray-800 px-3 py-1.5 rounded-xl text-xs font-mono">
+                        <span class="text-[10px] text-gray-500 uppercase mr-1">Resolver Server:</span>
+                        <button onclick="switchStreamServer('vidsrc_xyz')" id="btn-vidsrc_xyz" class="text-neonCyan font-bold border border-neonCyan/30 bg-neonCyan/10 px-2 py-0.5 rounded">SERVER Alpha</button>
+                        <button onclick="switchStreamServer('vidsrc_to')" id="btn-vidsrc_to" class="hover:text-neonCyan transition-colors px-2 py-0.5 rounded">SERVER Beta</button>
+                        <button onclick="switchStreamServer('embed_su')" id="btn-embed_su" class="hover:text-neonCyan transition-colors px-2 py-0.5 rounded">SERVER Gamma</button>
+                    </div>
+                </div>
+                
+                <div class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-frostedStone shadow-ultraDecoder">
+                    <iframe id="videoDecoderFrame" class="absolute inset-0 w-full h-full z-10 border-0 bg-zinc-950" allowfullscreen allow="autoplay; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="no-referrer"></iframe>
+                </div>
+            </div>
+
+            <div id="movieGridRowsEngine" class="space-y-10"></div>
+        </main>
+    </div>
+
+    <script>
+        const TMDB_API_KEY = "15d2fb670001422d4d858257578007d6";
+        const TMDB_BASE_URL = "https://api.themoviedb.org/3";
+        const TMDB_IMG_URL = "https://image.tmdb.org/t/p/w500";
+
+        let currentActiveMovieId = "533535";
+        let currentActiveMovieTitle = "Deadpool & Wolverine";
+        let chosenScraperServerNode = "vidsrc_xyz";
+        let autoSearchTimer = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            deployGlobalMovieChannels();
+            triggerAutomatedVideoPull(currentActiveMovieId, currentActiveMovieTitle);
+        });
+
+        function handleAutoSearch(query) {
+            clearTimeout(autoSearchTimer);
+            if (!query.trim()) {
+                deployGlobalMovieChannels();
+                return;
+            }
+            autoSearchTimer = setTimeout(() => {
+                executeGlobalDatabaseSearch(query);
+            }, 400);
+        }
+
+        function triggerAutomatedVideoPull(tmdbId, title) {
+            currentActiveMovieId = tmdbId;
+            currentActiveMovieTitle = title;
+            document.getElementById('nowPlayingTitle').innerText = "Now Streaming: " + title + " [Auto-Loaded Subtitles & CC]";
+            const frame = document.getElementById('videoDecoderFrame');
+            
+            if (chosenScraperServerNode === 'vidsrc_xyz') {
+                frame.src = `https://vidsrc.xyz/embed/movie/${tmdbId}`;
+            } else if (chosenScraperServerNode === 'vidsrc_to') {
+                frame.src = `https://vidsrc.to/embed/movie/${tmdbId}`;
+            } else if (chosenScraperServerNode === 'embed_su') {
+                frame.src = `https://embed.su/embed/movie/${tmdbId}`;
+            }
+        }
+
+        function switchStreamServer(serverKey) {
+            const servers = ['vidsrc_xyz', 'vidsrc_to', 'embed_su'];
+            servers.forEach(srv => {
+                const button = document.getElementById('btn-' + srv);
+                if (!button) return;
+                if (srv === serverKey) {
+                    button.className = "text-neonCyan font-bold border border-neonCyan/30 bg-neonCyan/10 px-2 py-0.5 rounded";
+                } else {
+                    button.className = "hover:text-neonCyan transition-colors px-2 py-0.5 rounded";
+                }
+            });
+            chosenScraperServerNode = serverKey;
+            triggerAutomatedVideoPull(currentActiveMovieId, currentActiveMovieTitle);
+        }
+
+        async function executeGlobalDatabaseSearch(searchTerm) {
+            const searchVal = searchTerm ? searchTerm.trim() : "";
+            if (!searchVal) return;
+
+            const gridContainer = document.getElementById('movieGridRowsEngine');
+            gridContainer.innerHTML = `
+                <div>
+                    <h2 class="text-white text-lg font-bold mb-4 tracking-wider uppercase pl-3 border-l-4 border-neonCyan animate-pulse">
+                        Pulling live tracks across international networks...
+                    </h2>
+                    <div id="searchResultsDisplay" class="grid grid-cols-2 md:grid-cols-5 gap-5"></div>
+                </div>`;
+
+            try {
+                const response = await fetch(`${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(searchVal)}`);
+                const data = await response.json();
+                const displayArea = document.getElementById('searchResultsDisplay');
+
+                if (!data.results || data.results.length === 0) {
+                    displayArea.innerHTML = `<p class="text-gray-500 font-mono col-span-full">No active matching streams running on server networks.</p>`;
+                    return;
+                }
+
+                displayArea.innerHTML = "";
+                data.results.slice(0, 15).forEach(movie => {
+                    if (!movie.poster_path) return;
+                    const cleanTitle = movie.title.replace(/'/g, "\\'");
+                    displayArea.innerHTML += `
+                        <div onclick="triggerAutomatedVideoPull('${movie.id}', '${cleanTitle}')" class="bg-frostedStone rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-900 hover:border-neonCyan hover:shadow-cyanGlow group">
+                            <img src="${TMDB_IMG_URL}${movie.poster_path}" alt="${movie.title}" class="w-full h-64 object-cover">
+                            <div class="p-4">
+                                <span class="text-[9px] text-neonCyan font-mono bg-neonCyan/10 border border-neonCyan/20 px-1.5 py-0.5 rounded uppercase font-bold">STREAM 4K ULTRA</span>
+                                <div class="text-white text-xs font-bold tracking-wide mt-2 truncate uppercase">${movie.title}</div>
+                            </div>
+                        </div>`;
+                });
+            } catch (err) {
+                document.getElementById('searchResultsDisplay').innerHTML = `<p class="text-red-500 font-mono col-span-full">> Local Connection Error: Handshake timed out.</p>`;
+            }
+        }
+
+        async function deployGlobalMovieChannels() {
+            const container = document.getElementById('movieGridRowsEngine');
+            container.innerHTML = `<div class="text-center font-mono text-sm py-10 animate-pulse text-gray-500">> POLLING LIVE APIS FOR REALS GLOBAL FILM DATABASES...</div>`;
+
+            const endpointsConfig = [
+                { title: "Trending Globally (Netflix & Prime Active Databases)", url: `${TMDB_BASE_URL}/trending/movie/day?api_key=${TMDB_API_KEY}` },
+                { title: "Adrenaline Action Channel (MovieBox Live Networks)", url: `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}` },
+                { title: "Deep Space Sci-Fi Grid (Apple TV & Cinema Feeds)", url: `${TMDB_BASE_URL}/movie/top_rated?api_key=${TMDB_API_KEY}` }
+            ];
+
+            try {
+                const promises = endpointsConfig.map(cat => fetch(cat.url).then(res => res.json()));
+                const resultsBlock = await Promise.all(promises);
+                container.innerHTML = ""; 
+
+                endpointsConfig.forEach((channel, index) => {
+                    const filmsList = resultsBlock[index].results || [];
+                    if (filmsList.length === 0) return;
+
+                    let blockHtml = `
+                        <div>
+                            <h3 class="text-white text-sm font-extrabold mb-4 tracking-wider uppercase pl-3 border-l-4 border-neonCyan flex items-center gap-2">
+                                ${channel.title}
+                                <span class="text-[9px] font-mono tracking-widest text-neonCyan bg-neonCyan/10 border border-neonCyan/20 py-0.5 px-2 rounded-full font-bold">AUTO AUTOMATED CONNECTED</span>
+                            </h3>
+                            <div class="flex space-x-5 overflow-x-auto pb-5 scrollbar-hide px-1">`;
+
+                    filmsList.slice(0, 15).forEach(movie => {
+                        if (!movie.poster_path) return;
+                        const cleanTitle = movie.title.replace(/'/g, "\\'");
+                        blockHtml += `
+                            <div onclick="triggerAutomatedVideoPull('${movie.id}', '${cleanTitle}')" class="min-w-[180px] max-w-[180px] bg-frostedStone rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-900 hover:border-electricViolet hover:shadow-violetGlow group">
+                                <img src="${TMDB_IMG_URL}${movie.poster_path}" alt="${movie.title}" class="w-full h-56 object-cover">
+                                <div class="p-3">
+                                    <div class="text-[9px] text-neonCyan font-mono bg-neonCyan/10 border border-neonCyan/20 px-1.5 py-0.5 rounded inline-block font-bold uppercase">4K ULTRA HD</div>
+                                    <div class="text-white text-[11px] font-bold tracking-wide mt-2 truncate uppercase group-hover:text-neonCyan transition-colors">${movie.title}</div>
+                                </div>
+                            </div>`;
+                    });
+
+                    blockHtml += `</div></div>`;
+                    container.innerHTML += blockHtml;
+                });
+            } catch (error) {
+                container.innerHTML = `<div class="text-red-500 font-mono text-xs py-10">> Cloud Connection Failure. Check database sync parameters...</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
